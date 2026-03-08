@@ -1,0 +1,222 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "title": "Kafka Health",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "ops" } },
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 1 },
+      "title": "Messages Produced/sec",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(kafka_messages_produced_total[1m])",
+          "legendFormat": "{{topic}}"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "ops" } },
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 1 },
+      "title": "Messages Consumed/sec",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(kafka_messages_consumed_total[1m])",
+          "legendFormat": "{{topic}} / {{consumer_group}}"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "s" } },
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 1 },
+      "title": "Processing Duration P95",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, rate(kafka_message_processing_seconds_bucket[5m]))",
+          "legendFormat": "{{topic}} / {{consumer_group}}"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 9 },
+      "title": "Business Metrics",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "ops" } },
+      "gridPos": { "h": 8, "w": 6, "x": 0, "y": 10 },
+      "title": "Bets Placed/min",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(bets_placed_total[1m]) * 60",
+          "legendFormat": "bets/min"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 6, "x": 6, "y": 10 },
+      "title": "Bets Rejected",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(bets_rejected_total[1m]) * 60",
+          "legendFormat": "{{reason}}"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 6, "x": 12, "y": 10 },
+      "title": "Fraud Alerts",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(fraud_alerts_total[5m]) * 300",
+          "legendFormat": "{{alert_type}}"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 6, "x": 18, "y": 10 },
+      "title": "Bets Settled",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(bets_settled_total[5m]) * 300",
+          "legendFormat": "{{result}}"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 18 },
+      "title": "Odds",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "ops" } },
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 19 },
+      "title": "Odds Updates/sec",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(odds_updates_total[1m])",
+          "legendFormat": "updates/sec"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "percent" } },
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 19 },
+      "title": "Odds Change % Distribution",
+      "type": "histogram",
+      "targets": [
+        {
+          "expr": "rate(odds_change_percent_bucket[5m])",
+          "legendFormat": "{{le}}"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 19 },
+      "title": "Market Suspensions",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(market_suspensions_total[5m]) * 300",
+          "legendFormat": "suspensions"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 27 },
+      "title": "API",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "ops" } },
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 28 },
+      "title": "Request Rate by Endpoint",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(http_requests_total[1m])",
+          "legendFormat": "{{method}} {{path}}"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "s" } },
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 28 },
+      "title": "Response Time P95",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))",
+          "legendFormat": "{{method}} {{path}}"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "ops" } },
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 28 },
+      "title": "Processing Errors/sec",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(kafka_message_processing_errors_total[1m])",
+          "legendFormat": "{{topic}} / {{consumer_group}}"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 36 },
+      "title": "Game Simulation",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 37 },
+      "title": "Game Events by Type",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(game_events_total[5m]) * 300",
+          "legendFormat": "{{type}}"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "tags": ["betting", "kafka"],
+  "templating": { "list": [] },
+  "time": { "from": "now-30m", "to": "now" },
+  "title": "Mini Betting Platform",
+  "uid": "betting-platform"
+}
